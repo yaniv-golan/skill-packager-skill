@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "has-claude-plugin-json", "passed": true, "evidence": "proof-engine/.claude-plugin/plugin.json exists and is valid JSON"},
+    {"text": "has-marketplace-json", "passed": true, "evidence": ".claude-plugin/marketplace.json exists and is valid JSON"},
+    {"text": "has-cursor-plugin-json", "passed": true, "evidence": ".cursor-plugin/plugin.json exists and is valid JSON"},
+    {"text": "has-release-workflow", "passed": true, "evidence": ".github/workflows/release.yml exists"},
+    {"text": "has-bump-version", "passed": true, "evidence": "tools/bump-version.sh exists"},
+    {"text": "has-agents-dir", "passed": true, "evidence": ".agents/skills/ directory exists"},
+    {"text": "skill-files-copied", "passed": true, "evidence": "SKILL.md, scripts/, references/ all present under proof-engine/skills/proof-engine/"},
+    {"text": "source-paths-preserved", "passed": true, "evidence": "SKILL.md contains ${CLAUDE_SKILL_DIR}/ references (correct — only stripped in zip builds)"},
+    {"text": "cursor-skills-path-correct", "passed": true, "evidence": ".cursor-plugin/plugin.json has skills: ./proof-engine/skills"},
+    {"text": "has-readme-platforms", "passed": true, "evidence": "README mentions Claude Code, Cursor, Manus, ChatGPT, Codex"},
+    {"text": "version-consistent", "passed": true, "evidence": "Version 1.7.0 consistent across VERSION, both plugin.json files"}
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "skill_name": "skill-packager",
+  "iteration": 1,
+  "configurations": [
+    {
+      "name": "with_skill",
+      "evals": [
+        {"eval_id": 1, "eval_name": "universal-repo-single-skill", "pass_rate": 1.0, "passed": 11, "total": 11, "tokens": 53145, "duration_seconds": 2875.9},
+        {"eval_id": 2, "eval_name": "zip-only-manus-upload", "pass_rate": 1.0, "passed": 6, "total": 6, "tokens": 24017, "duration_seconds": 47.6},
+        {"eval_id": 3, "eval_name": "multi-skill-marketplace", "pass_rate": 1.0, "passed": 6, "total": 6, "tokens": 63320, "duration_seconds": 440.6}
+      ],
+      "aggregate": {
+        "mean_pass_rate": 1.0,
+        "stddev_pass_rate": 0.0,
+        "mean_tokens": 46827,
+        "mean_duration_seconds": 1121.4
+      }
+    },
+    {
+      "name": "without_skill",
+      "evals": [
+        {"eval_id": 1, "eval_name": "universal-repo-single-skill", "pass_rate": 0.182, "passed": 2, "total": 11, "tokens": 167929, "duration_seconds": 2731.5},
+        {"eval_id": 2, "eval_name": "zip-only-manus-upload", "pass_rate": 0.833, "passed": 5, "total": 6, "tokens": 13851, "duration_seconds": 48.1},
+        {"eval_id": 3, "eval_name": "multi-skill-marketplace", "pass_rate": 0.5, "passed": 3, "total": 6, "tokens": 46039, "duration_seconds": 338.1}
+      ],
+      "aggregate": {
+        "mean_pass_rate": 0.505,
+        "stddev_pass_rate": 0.266,
+        "mean_tokens": 75940,
+        "mean_duration_seconds": 1039.2
+      }
+    }
+  ],
+  "delta": {
+    "pass_rate_improvement": "+49.5pp (0.505 → 1.000)",
+    "token_change": "-38% (75940 → 46827 mean)",
+    "notes": "With-skill achieves 100% on all assertions. Without-skill fails on manifest paths (wrong directory names), marketplace.json (not generated), version management (no bump script), and path hygiene (${CLAUDE_SKILL_DIR}/ not stripped for cross-platform). The skill's value is primarily in knowing the exact directory conventions (.claude-plugin/ vs claude-plugin/, .cursor-plugin/ vs .cursor/) that Claude doesn't know by default."
+  }
+}

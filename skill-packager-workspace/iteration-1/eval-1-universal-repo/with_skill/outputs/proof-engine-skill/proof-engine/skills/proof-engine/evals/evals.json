@@ -1,0 +1,226 @@
+{
+  "skill_name": "proof-engine",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Can you prove that the sum of the first 1000 prime numbers is itself a prime number?",
+      "expected_output": "DISPROVED — the sum 3,682,913 is composite (13 × 29 × 9,769). Proof script uses sympy, passes all validation checks.",
+      "files": [],
+      "expectations": [
+        "The proof correctly identifies the sum as 3,682,913",
+        "The proof finds that 3,682,913 is NOT prime and outputs DISPROVED",
+        "The proof provides a factorization as counterexample",
+        "A CLAIM_FORMAL dict with operator_note is present",
+        "The proof script is self-contained and runnable via python proof.py",
+        "validate_proof.py passes with no issues",
+        "proof.py includes FACT_REGISTRY with A-prefixed IDs",
+        "proof.py __main__ emits === PROOF SUMMARY (JSON) === block",
+        "JSON summary contains fact_registry (A-types with method/result), claim_formal, verdict, key_results",
+        "Three output files: proof.py, proof.md, proof_audit.md",
+        "proof.md has executive summary with key numbers under verdict",
+        "proof.md uses inline fact references (A1, A2)",
+        "proof_audit.md contains Type A facts table, computation traces, and hardening checklist",
+        "proof_audit.md omits Type B sections (pure-math proof)"
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "Is it really true that the State of Israel is over 70 years old? Prove it rigorously.",
+      "expected_output": "PROVED (with unverified citations) — Israel founded May 14, 1948, age is 77 years as of March 2026, which is > 70.",
+      "files": [],
+      "expectations": [
+        "Two independent sources are cited for the founding date",
+        "Dates are parsed from quotes using parse_date_from_quote, not hand-typed",
+        "Citations are verified using verify_all_citations which returns structured dicts",
+        "date.today() is used for system time anchoring",
+        "CLAIM_FORMAL has operator '>' with operator_note explaining the choice",
+        "At least 3 adversarial checks are structurally independent",
+        "Cross-check confirms both sources agree on the founding date",
+        "Verdict is PROVED or PROVED (with unverified citations)",
+        "validate_proof.py passes with no issues",
+        "proof.py includes FACT_REGISTRY mapping B1, B2 to source keys",
+        "proof.py __main__ emits === PROOF SUMMARY (JSON) === block",
+        "JSON summary citations use structured dict fields (status/method/coverage_pct/fetch_mode), not parsed from message strings",
+        "Three output files: proof.py, proof.md, proof_audit.md",
+        "proof.md has executive summary with key numbers under verdict",
+        "proof.md uses inline fact references (B1, B2)",
+        "proof_audit.md contains full evidence table with quotes and URLs from JSON citations",
+        "proof_audit.md citation details show status, method, fetch_mode, and impact",
+        "proof_audit.md contains CLAIM_FORMAL specification and FACT_REGISTRY from JSON summary",
+        "proof_audit.md contains computation traces reproduced from explain_calc inline output",
+        "proof_audit.md sections labeled with provenance",
+        "proof_audit.md hardening checklist is complete",
+        "proof.md conclusion states impact of any unverified citations"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Prove that Python is the best programming language",
+      "expected_output": "Skill correctly identifies this as an opinion/value judgment and declines to produce a proof. Offers factual alternatives.",
+      "files": [],
+      "expectations": [
+        "No proof script is generated",
+        "The response identifies the claim as a value judgment or opinion",
+        "The response explains that 'best' has no objective definition without criteria",
+        "The response offers factual alternatives that could be proven"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Fact-check this: Earth's average temperature has risen by more than 1 degree Celsius since 1880.",
+      "expected_output": "PROVED or PROVED (with unverified citations) — multiple sources confirm ~1.1C warming. Proof uses multiple independent sources, some may have partial citation verification due to page formatting.",
+      "files": [],
+      "expectations": [
+        "At least 3 independent empirical sources cited (NOAA, NASA, IPCC, etc.)",
+        "FACT_REGISTRY has B1, B2, B3+ entries, each mapping to a distinct source key",
+        "Each source is its own fact row in proof.md Evidence Summary",
+        "JSON summary citations have structured fields (status/method/coverage_pct/fetch_mode) per fact",
+        "JSON summary extractions object has entries for each extracted value",
+        "proof_audit.md shows per-source citation verification with status, method, and fetch_mode",
+        "Any partial citation is clearly distinguished from verified in proof_audit.md",
+        "proof_audit.md Citation Verification Details has impact field for non-verified citations labeled as author analysis",
+        "proof.md Proof Logic references fact IDs inline and notes source agreement where applicable",
+        "proof.md conclusion addresses any unverified citations with impact on specific conclusions",
+        "Fact IDs are consistent across proof.py JSON summary, proof.md, and proof_audit.md",
+        "proof_audit.md extraction records include method narrative labeled as author analysis",
+        "proof_audit.md computation traces reproduced verbatim from explain_calc inline output",
+        "Three output files: proof.py, proof.md, proof_audit.md",
+        "validate_proof.py passes with no issues"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Prove that the population of Tokyo exceeded 13 million by 2020. Note: Python may not have internet access in this environment, so include page snapshots in empirical_facts.",
+      "expected_output": "PROVED or PROVED (verified from snapshots) — population data confirmed from provided snapshots of authoritative sources.",
+      "files": [],
+      "expectations": [
+        "empirical_facts entries include snapshot field with pre-fetched page text",
+        "verify_citation uses snapshot when live fetch is unavailable",
+        "JSON summary citations show fetch_mode for each citation (live or snapshot)",
+        "proof_audit.md clearly indicates verification mode per citation (live vs snapshot)",
+        "FACT_REGISTRY maps fact IDs to source keys",
+        "Values parsed from quotes using parse_number_from_quote, not hand-typed",
+        "verify_extraction called on extracted values",
+        "Three output files: proof.py, proof.md, proof_audit.md",
+        "validate_proof.py passes with no issues"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Is the speed of light faster than the speed of sound by more than a factor of 1 million?",
+      "expected_output": "DISPROVED — the ratio is approximately 874,000x, which is less than 1,000,000. Speed of light ~299,792,458 m/s, speed of sound ~343 m/s.",
+      "files": [],
+      "expectations": [
+        "Both speeds are cited from authoritative sources with exact quotes",
+        "Values are parsed from quotes, not hand-typed",
+        "The ratio is computed in Python, not stated by the LLM",
+        "CLAIM_FORMAL has operator '>' with threshold 1000000 and operator_note",
+        "Verdict is DISPROVED because ~874,000 < 1,000,000",
+        "Adversarial check searches for whether the ratio could exceed 1 million under different conditions",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Prove that Brazil is both the largest country in South America by area AND has the largest population in South America.",
+      "expected_output": "PROVED — Brazil leads South America in both area (~8.5M km²) and population (~203M+). Compound AND claim with both sub-claims verified.",
+      "files": [],
+      "expectations": [
+        "CLAIM_FORMAL includes sub_claims list with conjunction AND",
+        "At least two sub-claims: area comparison and population comparison",
+        "Each sub-claim has its own sources and extracted values",
+        "At least one comparison country cited for each dimension",
+        "Values parsed from quotes using parse_number_from_quote",
+        "Both sub-claims must be PROVED for overall PROVED verdict",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Is it true that coffee consumption reduces type 2 diabetes risk?",
+      "expected_output": "PARTIALLY VERIFIED or UNDETERMINED — studies show associations but with conflicting magnitudes, confounders, and no definitive causal proof.",
+      "files": [],
+      "expectations": [
+        "Multiple sources cited showing different study conclusions",
+        "The proof acknowledges conflicting or nuanced evidence",
+        "Verdict is PARTIALLY VERIFIED or UNDETERMINED, not PROVED",
+        "The proof explains why a definitive verdict cannot be reached",
+        "Adversarial check includes studies showing limitations or confounders",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Prove that the Eiffel Tower is taller than the Statue of Liberty, which is taller than the Leaning Tower of Pisa.",
+      "expected_output": "PROVED — Eiffel Tower (~330m) > Statue of Liberty (~93m) > Leaning Tower of Pisa (~56m). Multi-hop transitive chain.",
+      "files": [],
+      "expectations": [
+        "Three separate structures cited with height data from independent sources",
+        "Heights parsed from quotes, not hand-typed",
+        "Two explicit comparisons: Eiffel > Statue of Liberty, Statue of Liberty > Leaning Tower",
+        "CLAIM_FORMAL captures the transitive chain structure",
+        "All three heights cross-checked against at least two sources each or adversarial check confirms no contradicting heights",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Will AI surpass human intelligence by 2030?",
+      "expected_output": "Skill correctly identifies this as a future prediction and returns UNDETERMINED or declines to produce a proof.",
+      "files": [],
+      "expectations": [
+        "The response identifies the claim as a future prediction",
+        "The response explains that future events cannot be verified",
+        "Verdict is UNDETERMINED if a proof is generated, or no proof is generated",
+        "No PROVED or DISPROVED verdict is issued"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Prove that the 50th Fibonacci number is divisible by 5 but not by 7.",
+      "expected_output": "PROVED — Fib(50) = 12,586,269,025. 12,586,269,025 mod 5 = 0 and 12,586,269,025 mod 7 ≠ 0.",
+      "files": [],
+      "expectations": [
+        "The proof computes Fib(50) correctly as 12586269025",
+        "Both divisibility checks are computed in Python",
+        "CLAIM_FORMAL captures the compound AND structure (divisible by 5 AND not divisible by 7)",
+        "No empirical sources needed — pure Type A computation",
+        "Adversarial check verifies Fibonacci computation independently (e.g., closed-form or alternative algorithm)",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "Is it true that Japan's national debt exceeds 200% of its GDP?",
+      "expected_output": "PROVED or PROVED (with unverified citations) — Japan's debt-to-GDP ratio consistently reported above 200% by IMF, World Bank, or similar sources.",
+      "files": [],
+      "expectations": [
+        "At least two independent sources cited (IMF, World Bank, OECD, etc.)",
+        "Percentage values parsed from quotes using parse_percentage_from_quote or parse_number_from_quote",
+        "CLAIM_FORMAL has operator '>' with threshold 200 and operator_note",
+        "Cross-check confirms sources agree on the >200% figure",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "Fact-check: The Great Wall of China is visible from space with the naked eye.",
+      "expected_output": "DISPROVED — NASA and astronaut testimony confirm the Great Wall is not visible from low Earth orbit with the naked eye.",
+      "files": [],
+      "expectations": [
+        "At least one authoritative source (NASA, astronaut accounts) cited with exact quote",
+        "The proof identifies this as a common misconception",
+        "Verdict is DISPROVED",
+        "Adversarial check searches for any sources claiming visibility and addresses them",
+        "validate_proof.py passes with no issues",
+        "Three output files: proof.py, proof.md, proof_audit.md"
+      ]
+    }
+  ]
+}

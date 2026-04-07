@@ -1,0 +1,7 @@
+interface:
+  display_name: "Transcription Reader"
+  short_description: "Read, parse, and analyze transcription and subtitle files"
+  brand_color: "#3B82F6"
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "multi-skill-marketplace",
+  "prompt": "Package these two skills into a single Claude marketplace plugin: /Users/yaniv/Documents/code/pretext-skill/pretext/skills/pretext and /Users/yaniv/Documents/code/ytd-skill/skills/youtube-downloader. Call the plugin 'media-tools', my GitHub is yaniv-golan, repo name media-tools-plugin.",
+  "assertions": []
+}

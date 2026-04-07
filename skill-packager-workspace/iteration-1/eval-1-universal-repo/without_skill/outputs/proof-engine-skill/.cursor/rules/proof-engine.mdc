@@ -1,0 +1,51 @@
+---
+description: Create formal, verifiable proofs of claims with machine-checkable reasoning
+globs:
+alwaysApply: false
+---
+
+# Proof Engine
+
+When the user asks to prove, verify, fact-check, or rigorously establish whether a claim is true or false, follow the Proof Engine skill instructions.
+
+## Setup
+
+Set `PROOF_ENGINE_ROOT` to the absolute path of the `skill/` directory in this repository. For example:
+
+```
+PROOF_ENGINE_ROOT = "/path/to/proof-engine-skill/skill"
+```
+
+## Instructions
+
+Read and follow the complete instructions in the SKILL.md file located at:
+`${PROOF_ENGINE_ROOT}/SKILL.md`
+
+The skill file contains:
+- The 7 Hardening Rules for proof integrity
+- Workflow steps (analyze, gather, write, validate, execute, self-critique)
+- Proof templates for different claim types
+- Bundled script documentation
+- Verdict definitions
+
+## Trigger Phrases
+
+Activate this skill when the user says any of:
+- "is it really true"
+- "can you prove"
+- "verify this"
+- "fact-check this"
+- "prove it"
+- "show me the logic"
+
+Do NOT activate for opinions, essays, or questions with no verifiable answer.
+
+## Key Scripts
+
+Import from `${PROOF_ENGINE_ROOT}/scripts/`:
+- `computations.py` -- verified constants, compare(), cross_check(), explain_calc()
+- `extract_values.py` -- parse dates/numbers/percentages from quote strings
+- `smart_extract.py` -- Unicode normalization, verify_extraction()
+- `verify_citations.py` -- fetch URLs, verify quotes, build citation details
+- `validate_proof.py` -- static analysis for rule compliance
+- `source_credibility.py` -- domain credibility assessment

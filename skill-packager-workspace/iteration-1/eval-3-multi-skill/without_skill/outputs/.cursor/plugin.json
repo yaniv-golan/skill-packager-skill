@@ -1,0 +1,21 @@
+{
+  "name": "media-tools",
+  "display_name": "Media Tools",
+  "version": "1.0.0",
+  "description": "Text measurement with Pretext and YouTube video downloading with yt-dlp",
+  "author": "Yaniv Golan <yaniv@golan.name>",
+  "license": "MIT",
+  "repository": "https://github.com/yaniv-golan/media-tools-plugin",
+  "skills": [
+    {
+      "name": "pretext",
+      "path": "skills/pretext/SKILL.md",
+      "trigger": "pretext, @chenglou/pretext, text measurement, text layout without DOM, text reflow, text around obstacles, auto-fit font size, layoutNextLine, measure text height/width in JavaScript"
+    },
+    {
+      "name": "youtube-downloader",
+      "path": "skills/youtube-downloader/SKILL.md",
+      "trigger": "download YouTube video, save video from YouTube, video subtitles, youtube download, yt-dlp, video resolution, SRT subtitles"
+    }
+  ]
+}

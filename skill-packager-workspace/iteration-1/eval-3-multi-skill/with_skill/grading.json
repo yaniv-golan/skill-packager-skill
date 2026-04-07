@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "both-skills-present", "passed": true, "evidence": "media-tools/skills/pretext/SKILL.md and media-tools/skills/youtube-downloader/SKILL.md both exist"},
+    {"text": "plugin-json-valid", "passed": true, "evidence": "media-tools/.claude-plugin/plugin.json valid JSON with name media-tools"},
+    {"text": "marketplace-json-valid", "passed": true, "evidence": ".claude-plugin/marketplace.json exists and is valid JSON"},
+    {"text": "cursor-plugin-valid", "passed": true, "evidence": ".cursor-plugin/plugin.json exists and is valid JSON"},
+    {"text": "pretext-refs-copied", "passed": true, "evidence": "media-tools/skills/pretext/references/ contains api.md and patterns.md"},
+    {"text": "readme-mentions-both", "passed": true, "evidence": "README mentions both pretext and youtube-downloader"}
+  ]
+}

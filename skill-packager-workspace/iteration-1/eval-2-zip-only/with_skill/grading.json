@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "zip-exists", "passed": true, "evidence": "transcription-reader.zip created at /tmp/tr-dist/"},
+    {"text": "zip-has-skill-md", "passed": true, "evidence": "Extracted zip contains transcription-reader/SKILL.md"},
+    {"text": "zip-has-scripts", "passed": true, "evidence": "Extracted zip contains transcription-reader/scripts/extract_transcript.py"},
+    {"text": "zip-has-references", "passed": true, "evidence": "Extracted zip contains transcription-reader/references/stj-format.md"},
+    {"text": "paths-stripped", "passed": true, "evidence": "grep for CLAUDE_SKILL_DIR returns CLEAN — no references remain"},
+    {"text": "flat-structure", "passed": true, "evidence": "Zip extracts to single transcription-reader/ directory"}
+  ]
+}

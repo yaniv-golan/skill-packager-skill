@@ -1,0 +1,12 @@
+{
+  "name": "proof-engine",
+  "version": "1.7.0",
+  "description": "Create formal, verifiable proofs of claims with machine-checkable reasoning. Use when asked to prove, verify, fact-check, or rigorously establish whether a claim is true or false.",
+  "skills": [
+    {
+      "name": "proof-engine",
+      "description": "Create formal, verifiable proofs of claims with machine-checkable reasoning. Use when asked to prove, verify, fact-check, or rigorously establish whether a claim is true or false -- mathematical, empirical, or mixed. Trigger phrases: 'is it really true', 'can you prove', 'verify this', 'fact-check this', 'prove it', 'show me the logic'. Do NOT use for opinions, essays, or questions with no verifiable answer.",
+      "skill_file": "../skill/SKILL.md"
+    }
+  ]
+}

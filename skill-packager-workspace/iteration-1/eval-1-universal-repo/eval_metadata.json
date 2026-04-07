@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "universal-repo-single-skill",
+  "prompt": "I have a skill at /Users/yaniv/Documents/code/proof-engine/proof-engine/skills/proof-engine that I want to package as a universal repo. My GitHub username is yaniv-golan and the repo should be called proof-engine-skill. Use MIT license.",
+  "assertions": []
+}

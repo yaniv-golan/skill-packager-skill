@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Verify tag matches VERSION file
+        run: |
+          SKILL_VERSION=$(cat skill/VERSION | tr -d '[:space:]')
+          TAG_VERSION="${{ steps.version.outputs.VERSION }}"
+          if [ "$SKILL_VERSION" != "$TAG_VERSION" ]; then
+            echo "ERROR: Tag v$TAG_VERSION does not match skill/VERSION ($SKILL_VERSION)"
+            exit 1
+          fi
+
+      - name: Create ZIP archive for distribution
+        run: |
+          zip -r proof-engine-skill-${{ steps.version.outputs.VERSION }}.zip \
+            skill/ \
+            .claude/ \
+            .cursor/ \
+            .windsurfrules \
+            chatgpt/ \
+            LICENSE \
+            README.md \
+            pyproject.toml \
+            CHANGELOG.md \
+            -x "**/__pycache__/*" "**/*.pyc"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: proof-engine-skill-${{ steps.version.outputs.VERSION }}.zip
+          body: |
+            ## Proof Engine Skill v${{ steps.version.outputs.VERSION }}
+
+            Download the ZIP and follow the installation instructions in the [README](https://github.com/yaniv-golan/proof-engine-skill#readme) for your platform.
+
+            ### Supported Platforms
+            - Claude Code (plugin)
+            - Cursor (rules)
+            - Windsurf (rules)
+            - ChatGPT (Custom GPT)
+            - Codex CLI (agent)
+            - Any AI coding environment (manual integration)
+          generate_release_notes: true

@@ -1,0 +1,13 @@
+{
+  "name": "proof-engine",
+  "version": "1.7.0",
+  "description": "Create formal, verifiable proofs of claims with machine-checkable reasoning.",
+  "author": {
+    "name": "Yaniv Golan",
+    "email": "yaniv@golan.name"
+  },
+  "repository": "https://github.com/yaniv-golan/proof-engine-skill",
+  "license": "MIT",
+  "keywords": ["proof", "verification", "fact-check", "formal-reasoning", "citations"],
+  "skills": "./skills"
+}

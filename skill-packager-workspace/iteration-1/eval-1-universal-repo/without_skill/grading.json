@@ -1,0 +1,17 @@
+{
+  "eval_id": 1,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "has-claude-plugin-json", "passed": false, "evidence": "Used claude-plugin/ (no dot prefix) instead of .claude-plugin/plugin.json"},
+    {"text": "has-marketplace-json", "passed": false, "evidence": "No marketplace.json generated at all"},
+    {"text": "has-cursor-plugin-json", "passed": false, "evidence": "Used .cursor/rules/proof-engine.mdc instead of .cursor-plugin/plugin.json"},
+    {"text": "has-release-workflow", "passed": true, "evidence": ".github/workflows/release.yml exists"},
+    {"text": "has-bump-version", "passed": false, "evidence": "No bump-version.sh; created setup_repo.py workaround instead"},
+    {"text": "has-agents-dir", "passed": false, "evidence": "No .agents/skills/ directory"},
+    {"text": "skill-files-copied", "passed": false, "evidence": "Used skill/ directory instead of plugin-name/skills/skill-name/ structure"},
+    {"text": "source-paths-preserved", "passed": false, "evidence": "Did not preserve ${CLAUDE_SKILL_DIR}/ in repo copy"},
+    {"text": "cursor-skills-path-correct", "passed": false, "evidence": "No .cursor-plugin/plugin.json exists"},
+    {"text": "has-readme-platforms", "passed": true, "evidence": "README mentions Claude Code, Cursor, Manus, ChatGPT, Codex"},
+    {"text": "version-consistent", "passed": false, "evidence": "No VERSION file at root; no version propagation system"}
+  ]
+}

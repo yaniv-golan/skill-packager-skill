@@ -1,0 +1,13 @@
+{
+  "name": "media-tools",
+  "displayName": "Media Tools",
+  "version": "0.1.0",
+  "description": "A collection of media-related skills: Pretext text measurement library integration and YouTube video downloading with yt-dlp.",
+  "author": {
+    "name": "Yaniv Golan",
+    "email": "yaniv@golan.name"
+  },
+  "license": "MIT",
+  "keywords": ["pretext", "text-measurement", "youtube", "video-download", "yt-dlp", "subtitles", "media"],
+  "skills": "./media-tools/skills"
+}

@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "zip-only-manus-upload",
+  "prompt": "I just need a zip of my transcription-reader skill for uploading to Manus. The skill is at /Users/yaniv/Documents/code/transcription-reader-skill/skills/transcription-reader. Put the zip in /tmp/tr-dist/.",
+  "assertions": []
+}

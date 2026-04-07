@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "zip-exists", "passed": true, "evidence": "baseline-transcription-reader.zip created"},
+    {"text": "zip-has-skill-md", "passed": true, "evidence": "Extracted zip contains SKILL.md"},
+    {"text": "zip-has-scripts", "passed": true, "evidence": "Extracted zip contains scripts/extract_transcript.py"},
+    {"text": "zip-has-references", "passed": true, "evidence": "Extracted zip contains references/stj-format.md"},
+    {"text": "paths-stripped", "passed": false, "evidence": "5 ${CLAUDE_SKILL_DIR}/ references remain in SKILL.md — would break on non-Claude platforms"},
+    {"text": "flat-structure", "passed": true, "evidence": "Zip extracts to single directory"}
+  ]
+}

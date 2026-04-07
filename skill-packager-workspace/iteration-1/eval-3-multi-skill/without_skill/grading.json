@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "configuration": "without_skill",
+  "expectations": [
+    {"text": "both-skills-present", "passed": true, "evidence": "skills/pretext/SKILL.md and skills/youtube-downloader/SKILL.md exist"},
+    {"text": "plugin-json-valid", "passed": false, "evidence": "Used package.json + manifest.json instead of .claude-plugin/plugin.json"},
+    {"text": "marketplace-json-valid", "passed": false, "evidence": "No .claude-plugin/marketplace.json — used manifest.json at root"},
+    {"text": "cursor-plugin-valid", "passed": false, "evidence": "Used .cursor/plugin.json instead of .cursor-plugin/plugin.json"},
+    {"text": "pretext-refs-copied", "passed": true, "evidence": "references/ directory present with api.md and patterns.md"},
+    {"text": "readme-mentions-both", "passed": true, "evidence": "README mentions both skills"}
+  ]
+}

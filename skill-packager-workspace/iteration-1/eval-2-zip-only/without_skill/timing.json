@@ -1,0 +1,6 @@
+{
+  "total_tokens": 13851,
+  "duration_ms": 48114,
+  "total_duration_seconds": 48.1,
+  "note": "Subagent failed on Bash permissions; ran manually without skill guidance"
+}

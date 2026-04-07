@@ -1,0 +1,78 @@
+[
+  {
+    "query": "I'm done with my feature on feature/notifications-v2 — theres about 8 commits, half are WIP. can you clean them up and open a PR against main? I want a nice description too",
+    "should_trigger": true
+  },
+  {
+    "query": "the reviewer left 3 comments on my PR (#247) about the error handling in the payments module. I've already fixed everything locally. can you update the PR cleanly without adding 'fix review' commits?",
+    "should_trigger": true
+  },
+  {
+    "query": "prepare this branch for a PR — squash the fixups, rebase onto latest main, push, and create the PR with gh. the target is origin/develop",
+    "should_trigger": true
+  },
+  {
+    "query": "I need to force-push after the rebase I just did. the PR is already open on github",
+    "should_trigger": true
+  },
+  {
+    "query": "address the review feedback on my PR — the reviewer wants me to move the validation logic from commit 7f3a2b1 into a separate utility file. I've made the change",
+    "should_trigger": true
+  },
+  {
+    "query": "clean up my commits and open a pull request. right now its: 'initial impl', 'fix', 'fix again', 'add tests', 'fix test'. make it 2 clean commits: implementation and tests",
+    "should_trigger": true
+  },
+  {
+    "query": "update my PR — I rebased onto main and resolved conflicts, now I need to push and maybe update the PR description since the commits changed",
+    "should_trigger": true
+  },
+  {
+    "query": "I have a stack of 3 PRs that depend on each other. the base one just got rebased. can you help me update the child branches?",
+    "should_trigger": true
+  },
+  {
+    "query": "I want to open a PR but my branch has diverged from main by 30 commits. clean up my branch, rebase onto main, check for conflicts first, then create the PR",
+    "should_trigger": true
+  },
+  {
+    "query": "just squash my last 3 commits into one, I dont need a PR",
+    "should_trigger": false
+  },
+  {
+    "query": "my rebase has conflicts in 4 files, help me resolve them",
+    "should_trigger": false
+  },
+  {
+    "query": "can you review PR #123 and leave comments on the code quality?",
+    "should_trigger": false
+  },
+  {
+    "query": "I need to revert the last commit, it broke the build",
+    "should_trigger": false
+  },
+  {
+    "query": "whats the status of my open PRs on this repo?",
+    "should_trigger": false
+  },
+  {
+    "query": "split this commit into two separate commits — one for the schema changes and one for the API",
+    "should_trigger": false
+  },
+  {
+    "query": "cherry-pick commit abc123 from main onto my release branch",
+    "should_trigger": false
+  },
+  {
+    "query": "set up branch protection rules for main on our github repo",
+    "should_trigger": false
+  },
+  {
+    "query": "I want to amend the last commit to include this file I forgot",
+    "should_trigger": false
+  },
+  {
+    "query": "check if there would be conflicts if I rebase onto main — just predict, dont do anything",
+    "should_trigger": false
+  }
+]

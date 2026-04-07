@@ -1,0 +1,32 @@
+[project]
+name = "proof-engine-skill"
+version = "1.7.0"
+description = "Create formal, verifiable proofs of claims with machine-checkable reasoning"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Yaniv Golan", email = "yaniv@golan.name"},
+]
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.25.0",
+]
+
+[project.optional-dependencies]
+pdf = ["pdfplumber>=0.7.0"]
+math = ["sympy>=1.9"]
+dates = ["python-dateutil>=2.8.0"]
+all = [
+    "pdfplumber>=0.7.0",
+    "sympy>=1.9",
+    "python-dateutil>=2.8.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yaniv-golan/proof-engine-skill"
+Repository = "https://github.com/yaniv-golan/proof-engine-skill"
+Issues = "https://github.com/yaniv-golan/proof-engine-skill/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends._legacy:_Backend"

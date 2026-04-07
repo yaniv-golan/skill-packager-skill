@@ -1,0 +1,116 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Verify skill structure
+        run: |
+          echo "Checking required files exist..."
+          test -f skill/SKILL.md
+          test -f skill/VERSION
+          test -f skill/scripts/__init__.py
+          test -f skill/scripts/computations.py
+          test -f skill/scripts/extract_values.py
+          test -f skill/scripts/verify_citations.py
+          test -f skill/scripts/validate_proof.py
+          test -f skill/scripts/smart_extract.py
+          test -f skill/scripts/source_credibility.py
+          test -f skill/scripts/fetch.py
+          test -f skill/scripts/latex_text.py
+          test -f skill/scripts/ast_helpers.py
+          test -f skill/scripts/proof_types.py
+          test -d skill/scripts/data
+          test -d skill/references
+          test -d skill/agents
+          test -d skill/evals
+          echo "All required files present."
+
+      - name: Verify scripts import correctly
+        run: |
+          cd skill
+          python -c "from scripts.computations import compare, compute_age, DAYS_PER_GREGORIAN_YEAR; print('computations OK')"
+          python -c "from scripts.extract_values import parse_date_from_quote, parse_number_from_quote; print('extract_values OK')"
+          python -c "from scripts.smart_extract import normalize_unicode, verify_extraction; print('smart_extract OK')"
+          python -c "from scripts.source_credibility import assess_credibility; print('source_credibility OK')"
+          python -c "from scripts.fetch import fetch_page; print('fetch OK')"
+          python -c "from scripts.latex_text import latex_to_text; print('latex_text OK')"
+          python -c "from scripts.ast_helpers import extract_script_imports, find_call_sites; print('ast_helpers OK')"
+          python -c "from scripts.verify_citations import verify_citation, verify_all_citations; print('verify_citations OK')"
+
+      - name: Run computations CLI smoke test
+        run: |
+          cd skill
+          python scripts/computations.py age 1948-05-14
+          python scripts/computations.py compare 77 ">" 70
+          python scripts/computations.py constants
+
+      - name: Run extract_values CLI smoke test
+        run: |
+          cd skill
+          python scripts/extract_values.py date "On May 14, 1948, David Ben-Gurion proclaimed..."
+          python scripts/extract_values.py number "population reached 13,988,129"
+          python scripts/extract_values.py percent "grew by 12.5% in Q3"
+
+      - name: Verify source credibility data files
+        run: |
+          cd skill
+          python -c "
+          import json, os
+          data_dir = 'scripts/data'
+          for f in ['academic_domains.json', 'government_tlds.json', 'major_news.json', 'reference_domains.json', 'unreliable_domains.json']:
+              path = os.path.join(data_dir, f)
+              with open(path) as fh:
+                  data = json.load(fh)
+              print(f'{f}: OK ({len(data)} top-level keys)')
+          "
+
+      - name: Verify VERSION matches pyproject.toml
+        run: |
+          SKILL_VERSION=$(cat skill/VERSION | tr -d '[:space:]')
+          PYPROJECT_VERSION=$(python -c "
+          import re
+          with open('pyproject.toml') as f:
+              content = f.read()
+          m = re.search(r'version\s*=\s*\"([^\"]+)\"', content)
+          print(m.group(1))
+          ")
+          if [ "$SKILL_VERSION" != "$PYPROJECT_VERSION" ]; then
+            echo "Version mismatch: skill/VERSION=$SKILL_VERSION, pyproject.toml=$PYPROJECT_VERSION"
+            exit 1
+          fi
+          echo "Versions match: $SKILL_VERSION"
+
+      - name: Verify evals.json is valid
+        run: |
+          cd skill
+          python -c "
+          import json
+          with open('evals/evals.json') as f:
+              data = json.load(f)
+          assert 'evals' in data, 'Missing evals key'
+          assert len(data['evals']) > 0, 'No eval cases'
+          print(f'evals.json: {len(data[\"evals\"])} eval cases')
+          "

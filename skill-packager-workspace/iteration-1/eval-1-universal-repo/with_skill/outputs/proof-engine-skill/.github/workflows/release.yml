@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build generic zip
+        run: |
+          mkdir -p dist
+          cp -r proof-engine/skills/proof-engine dist/proof-engine
+          find dist/proof-engine -name '*.md' -exec sed -i 's|\${CLAUDE_SKILL_DIR}/||g' {} +
+          echo "${{ steps.version.outputs.version }}" > dist/proof-engine/VERSION
+          cd dist && zip -r ../proof-engine-skill.zip proof-engine/
+
+      - name: Extract release notes from CHANGELOG.md
+        id: changelog
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          NOTES=$(awk "/^## \[${VERSION}\]/{found=1; next} /^## \[/{if(found) exit} found{print}" CHANGELOG.md)
+          echo "$NOTES" > release-notes.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-notes.md
+          files: |
+            proof-engine-skill.zip

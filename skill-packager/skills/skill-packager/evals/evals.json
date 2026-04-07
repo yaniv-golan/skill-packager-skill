@@ -1,0 +1,26 @@
+{
+  "skill_name": "skill-packager",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a skill at /Users/yaniv/Documents/code/proof-engine/proof-engine/skills/proof-engine that I want to package as a universal repo. My GitHub username is yaniv-golan and the repo should be called proof-engine-skill. Use MIT license.",
+      "expected_output": "A complete universal repo directory with: dual plugin manifests (Claude + Cursor), marketplace.json, release.yml workflow, bump-version.sh, .agents/skills/ symlink, VERSION, VERSIONING.md, CHANGELOG.md, README with per-platform install instructions, LICENSE. All JSON valid. Version consistent. Scripts and references copied from source. ${CLAUDE_SKILL_DIR}/ preserved in repo files (only stripped in zip builds).",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "prompt": "I just need a zip of my transcription-reader skill for uploading to Manus. The skill is at /Users/yaniv/Documents/code/transcription-reader-skill/skills/transcription-reader. Put the zip in /tmp/tr-dist/.",
+      "expected_output": "A zip file containing the transcription-reader skill directory with SKILL.md, scripts/, references/, agents/ copied. ${CLAUDE_SKILL_DIR}/ stripped from all .md files. The zip should extract to a flat transcription-reader/ directory.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "prompt": "Package these two skills into a single Claude marketplace plugin: /Users/yaniv/Documents/code/pretext-skill/pretext/skills/pretext and /Users/yaniv/Documents/code/ytd-skill/skills/youtube-downloader. Call the plugin 'media-tools', my GitHub is yaniv-golan, repo name media-tools-plugin.",
+      "expected_output": "A plugin directory with both skills under media-tools/skills/, a .claude-plugin/plugin.json listing both, a root marketplace.json, and proper version management. Both skills' scripts and references copied. README documents both skills.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

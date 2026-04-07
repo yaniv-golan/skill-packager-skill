@@ -1,0 +1,5 @@
+This directory should contain a symlink:
+  proof-engine -> ../../proof-engine/skills/proof-engine
+
+Create it with:
+  cd .agents/skills && ln -s ../../proof-engine/skills/proof-engine proof-engine

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://cdn.claude.ai/plugins/manifest/v1/schema.json",
+  "name": "media-tools",
+  "display_name": "Media Tools",
+  "version": "1.0.0",
+  "description": "A plugin bundling two skills: Pretext (text measurement without DOM reflows) and YouTube Downloader (interactive video downloading with yt-dlp).",
+  "author": {
+    "name": "Yaniv Golan",
+    "email": "yaniv@golan.name"
+  },
+  "repository": "https://github.com/yaniv-golan/media-tools-plugin",
+  "license": "MIT",
+  "categories": ["media", "development"],
+  "skills": [
+    {
+      "name": "pretext",
+      "path": "skills/pretext",
+      "description": "Help developers use @chenglou/pretext, the 15KB TypeScript text measurement library that computes exact text metrics without DOM reflows."
+    },
+    {
+      "name": "youtube-downloader",
+      "path": "skills/youtube-downloader",
+      "description": "Download YouTube videos with interactive resolution and subtitle selection using yt-dlp."
+    }
+  ],
+  "compatibility": {
+    "claude_code": ">=1.0.0",
+    "cursor": true
+  }
+}

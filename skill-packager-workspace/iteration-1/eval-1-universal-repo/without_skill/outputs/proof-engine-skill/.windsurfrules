@@ -1,0 +1,18 @@
+# Proof Engine Skill
+#
+# When the user asks to prove, verify, fact-check, or rigorously establish
+# whether a claim is true or false, follow the Proof Engine skill.
+#
+# Setup: Set PROOF_ENGINE_ROOT to the absolute path of the skill/ directory
+# in this repository.
+#
+# Instructions: Read and follow skill/SKILL.md
+#
+# Trigger phrases: "is it really true", "can you prove", "verify this",
+# "fact-check this", "prove it", "show me the logic"
+#
+# Do NOT use for opinions, essays, or questions with no verifiable answer.
+#
+# Key scripts are in skill/scripts/:
+#   computations.py, extract_values.py, smart_extract.py,
+#   verify_citations.py, validate_proof.py, source_credibility.py

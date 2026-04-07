@@ -1,0 +1,7 @@
+interface:
+  display_name: "Proof Engine"
+  short_description: "Create formal, verifiable proofs of claims with machine-checkable reasoning"
+  brand_color: "#2E7D32"
+
+policy:
+  allow_implicit_invocation: true
