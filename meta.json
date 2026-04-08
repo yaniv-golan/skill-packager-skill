@@ -3,7 +3,7 @@
     {
       "name": "skill-packager",
       "source_path": "/Users/yaniv/Documents/code/skill-packager-skill/skills/skill-packager",
-      "description": "Package AI agent skills into deployment formats — .zip, .skill, Claude plugin, Claude marketplace, Cursor plugin, Cursor marketplace, ChatGPT/Manus zip, Codex CLI, NanoClaw marketplace, Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD. Use when the user says \"package this skill\", \"deploy my skill\", \"create a plugin from this skill\", \"make this work on Cursor/ChatGPT/Codex/NanoClaw\", \"set up a repo for my skill\", or wants to distribute a SKILL.md to any platform.",
+      "description": "Package AI agent skills into deployment formats \u2014 .zip, .skill, Claude plugin, Claude marketplace, Cursor plugin, Cursor marketplace, ChatGPT/Manus zip, Codex CLI, NanoClaw marketplace, Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD. Use when the user says \"package this skill\", \"deploy my skill\", \"create a plugin from this skill\", \"make this work on Cursor/ChatGPT/Codex/NanoClaw\", \"set up a repo for my skill\", or wants to distribute a SKILL.md to any platform.",
       "has_scripts": true,
       "has_references": true,
       "has_assets": false,
@@ -14,15 +14,26 @@
   "plugin_name": "skill-packager",
   "marketplace_name": "skill-packager-marketplace",
   "display_name": "Skill Packager",
-  "description": "Package AI agent skills into deployment formats — .zip, .skill, Claude plugin, Claude marketplace, Cursor plugin, Cursor marketplace, ChatGPT/Manus zip, Codex CLI, NanoClaw marketplace, Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD.",
-  "version": "0.1.0",
+  "description": "Package AI agent skills into deployment formats \u2014 .zip, .skill, Claude plugin, Claude marketplace, Cursor plugin, Cursor marketplace, ChatGPT/Manus zip, Codex CLI, NanoClaw marketplace, Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD.",
+  "version": "0.1.1",
   "author_name": "Yaniv Golan",
   "author_email": "yaniv@golan.name",
   "github_owner": "YanivGolan",
   "github_repo": "skill-packager-marketplace",
   "license": "MIT",
-  "keywords": ["skill", "packaging", "claude", "cursor", "codex", "marketplace", "agent-skills", "deployment"],
+  "keywords": [
+    "skill",
+    "packaging",
+    "claude",
+    "cursor",
+    "codex",
+    "marketplace",
+    "agent-skills",
+    "deployment"
+  ],
   "category": "development",
-  "formats": ["universal"],
+  "formats": [
+    "universal"
+  ],
   "targets": []
 }
