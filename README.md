@@ -1,5 +1,7 @@
 # Skill Packager
 
+![Skill Packager Banner](static/banner.png)
+
 [![Install in Claude Desktop](https://img.shields.io/badge/Install_in_Claude_Desktop-D97757?style=for-the-badge&logo=claude&logoColor=white)](https://YanivGolan.github.io/skill-packager-marketplace/static/install-claude-desktop.html)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
