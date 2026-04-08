@@ -18,7 +18,17 @@ You package one or more skills (directories containing SKILL.md) into deployment
 
 ## Step 1: Discover the input
 
-Ask the user for the skill directory path(s). Then read each skill's SKILL.md to extract:
+Ask the user for the skill directory path(s).
+
+**If the user provides a name instead of a path** (e.g., `fiction-studio` rather than `/some/path/fiction-studio`), search these locations in order before asking the user:
+1. `~/.claude/plugins/` — installed Claude Code plugins
+2. `~/.claude/skills/` — personal skills directory
+3. `.agents/skills/` relative to CWD — cross-platform skills
+4. CWD itself
+
+If not found in the above, do a broader search under `~/Library/Application Support/Claude/` (macOS) or `~/.config/claude/` (Linux).
+
+Then read each skill's SKILL.md to extract:
 - `name` — the skill identifier
 - `description` — what it does
 - `metadata.author`, `metadata.version` — if present
@@ -101,7 +111,7 @@ Use the **AskUserQuestion** tool to confirm the output directory (header: "Outpu
 
 | Option | Description |
 |--------|-------------|
-| `../<skill-name>-skill/` (Recommended) | New directory next to the skill source (best for universal repo) |
+| `../<skill-name>-skill/` (Recommended) | New directory relative to **CWD** (not relative to the skill source — use this unless the skill source is already in a convenient location) |
 | `./dist/` | Subdirectory inside the current project |
 
 The user can also pick "Other" to specify a custom path.
@@ -112,23 +122,32 @@ Use the bundled scripts to handle all deterministic generation:
 
 #### 1. Extract metadata from source skill(s)
 
+The scripts are a Python package and must be run with `-m` from the `scripts/` directory:
+
 ```bash
 # Single skill:
-python3 scripts/skill_packager metadata \
+cd scripts && python3 -m skill_packager metadata \
   --skill-path /path/to/skill > /tmp/partial-meta.json
 
 # Multi-skill:
-python3 scripts/skill_packager metadata \
+cd scripts && python3 -m skill_packager metadata \
   --skill-path /path/to/skill-a --skill-path /path/to/skill-b > /tmp/partial-meta.json
 ```
 
-Read the output JSON. Fill in any empty fields: `github_repo`, `formats`, `keywords`, `category`, `targets`. For multi-skill: also fill `plugin_name`, `marketplace_name`, `display_name`, `description`, `version`. Write the complete metadata to `meta.json`.
+Read the output JSON. Fill in any empty fields — paying special attention to these:
+
+- **`marketplace_name`** — the script sets this to the same value as `plugin_name`. You must append `-marketplace` manually: `"marketplace_name": "<plugin-name>-marketplace"`.
+- **`description`** — the script copies the full SKILL.md description, which may be hundreds of words. Truncate it to the first sentence only (the one-liner that will appear in `plugin.json`, `marketplace.json`, and the README).
+- `github_repo`, `formats`, `keywords`, `category`, `targets` — fill as needed.
+- For multi-skill: also fill `plugin_name`, `display_name`, `version`.
+
+Write the complete metadata to `meta.json`.
 
 #### 2. Scaffold the repo
 
 ```bash
-python3 scripts/skill_packager scaffold \
-  --metadata meta.json --output ./my-skill-repo/
+cd scripts && python3 -m skill_packager scaffold \
+  --metadata /path/to/meta.json --output ./my-skill-repo/
 ```
 
 This creates the full directory structure, copies skill files, renders all manifests, and creates the `.agents/skills/` stripped copy. The canonical copy (under `<plugin-name>/skills/`) keeps `` paths; the `.agents/skills/` copy has them stripped for cross-platform portability.
@@ -149,7 +168,7 @@ The scaffolded README.md and CHANGELOG.md contain `<!-- SKILL_PACKAGER: REPLACE 
 For formats that need a zip (ZIP, ChatGPT/Manus, Codex CLI):
 
 ```bash
-python3 scripts/skill_packager build-zip \
+cd scripts && python3 -m skill_packager build-zip \
   --skill-dir ./my-skill-repo/<plugin-name>/skills/<skill-name> \
   --output dist/<skill-name>.zip
 ```
@@ -159,7 +178,7 @@ python3 scripts/skill_packager build-zip \
 Run the validation script:
 
 ```bash
-python3 scripts/skill_packager validate ./my-skill-repo/
+cd scripts && python3 -m skill_packager validate ./my-skill-repo/
 ```
 
 This checks JSON validity, version consistency across all locations, skill path resolution, `.agents/skills/` entries, and stub detection (README/CHANGELOG must not still contain the placeholder marker). Fix any failures and rerun until all checks pass.
