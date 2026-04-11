@@ -201,6 +201,21 @@ Download [`{{zip-filename}}`](https://github.com/{{github-owner}}/{{github-repo}
 - **User-level**: `~/.agents/skills/`
 ```
 
+### NanoClaw
+
+```markdown
+### NanoClaw
+
+NanoClaw uses the same plugin marketplace as Claude Code. Install via:
+
+\`\`\`bash
+claude plugin marketplace add https://github.com/{{github-owner}}/{{github-repo}}
+claude plugin install {{plugin-name}}@{{marketplace-name}} --scope project
+\`\`\`
+
+> **Note:** NanoClaw enforces a 500-line limit on SKILL.md files. Skills run inside isolated Docker containers with their own filesystem. Keep instructions concise and move detail to reference files.
+```
+
 ---
 
 ## Platform compatibility notes
