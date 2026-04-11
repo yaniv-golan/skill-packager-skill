@@ -277,7 +277,11 @@ For multi-skill packages, create one symlink per skill.
 
 ## NanoClaw marketplace
 
-NanoClaw uses the standard Claude Code plugin marketplace format. If you're already generating a Claude marketplace (`.claude-plugin/marketplace.json`), that same repo structure works with NanoClaw.
+[NanoClaw](https://github.com/qwibitai/nanoclaw) is a lightweight, containerized AI assistant built on Anthropic's Agent SDK. It connects to WhatsApp, Telegram, Slack, Discord, Gmail and other messaging apps, running each agent in an isolated Docker container.
+
+NanoClaw has four skill types: **feature skills** (branch-based, for adding capabilities to NanoClaw itself), **utility skills** (self-contained code + SKILL.md), **operational skills** (instruction-only workflows), and **container skills** (loaded inside agent containers at runtime). The skill packager covers **operational and utility skills** — these are standard Claude Code skills distributed via marketplace repos. Feature skills (which use `skill/*` git branches) and container skills (which live in `container/skills/` with `allowed-tools` frontmatter) are NanoClaw-internal patterns outside the scope of generic skill packaging.
+
+The Claude marketplace format (`.claude-plugin/marketplace.json`) works directly with NanoClaw. No separate format is needed.
 
 NanoClaw users install via:
 ```bash
@@ -287,7 +291,7 @@ claude plugin marketplace add https://github.com/{{github-owner}}/{{github-repo}
 claude plugin install {{plugin-name}}@{{marketplace-name}} --scope project
 ```
 
-No separate format is needed. The Claude marketplace format covers NanoClaw.
+**NanoClaw-specific note:** NanoClaw enforces a 500-line limit on SKILL.md files. Keep skill instructions concise and move detail to separate reference files.
 
 ---
 
