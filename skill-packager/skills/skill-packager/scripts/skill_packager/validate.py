@@ -9,6 +9,7 @@ from typing import Any, Dict, List
 
 
 STUB_MARKER = "SKILL_PACKAGER: REPLACE THIS"
+SKILL_MD_LINE_LIMIT = 500
 
 
 # ---------------------------------------------------------------------------
@@ -163,6 +164,44 @@ def _check_agents_skills(repo_dir: Path) -> List[Dict[str, Any]]:
     return results
 
 
+def _check_skill_md_length(repo_dir: Path, meta: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Warn when SKILL.md exceeds 500 lines (NanoClaw enforces this limit)."""
+    results: List[Dict[str, Any]] = []
+    plugin_name = meta.get("plugin_name", "")
+    skills = meta.get("skills", [])
+
+    # Check plugin tree
+    for skill in skills:
+        sname = skill["name"] if isinstance(skill, dict) else skill
+        skill_md = repo_dir / plugin_name / "skills" / sname / "SKILL.md"
+        if skill_md.exists():
+            line_count = len(skill_md.read_text().splitlines())
+            if line_count > SKILL_MD_LINE_LIMIT:
+                results.append({"check": f"skill_md_length: {sname}",
+                                 "passed": True,
+                                 "message": f"warning: SKILL.md is {line_count} lines "
+                                            f"(NanoClaw enforces {SKILL_MD_LINE_LIMIT}-line limit)"})
+            else:
+                results.append({"check": f"skill_md_length: {sname}",
+                                 "passed": True, "message": ""})
+
+    # Check .agents/skills/ tree
+    agents_dir = repo_dir / ".agents" / "skills"
+    if agents_dir.exists():
+        for entry in sorted(agents_dir.iterdir()):
+            if entry.is_dir():
+                skill_md = entry / "SKILL.md"
+                if skill_md.exists():
+                    line_count = len(skill_md.read_text().splitlines())
+                    if line_count > SKILL_MD_LINE_LIMIT:
+                        results.append({"check": f"skill_md_length: .agents/{entry.name}",
+                                         "passed": True,
+                                         "message": f"warning: SKILL.md is {line_count} lines "
+                                                    f"(NanoClaw enforces {SKILL_MD_LINE_LIMIT}-line limit)"})
+
+    return results
+
+
 def _check_release_yml(repo_dir: Path) -> List[Dict[str, Any]]:
     """Check release.yml exists."""
     path = repo_dir / ".github" / "workflows" / "release.yml"
@@ -221,6 +260,7 @@ def validate_repo(repo_dir: Path) -> List[Dict[str, Any]]:
     # Always run: JSON validity, skill paths, version consistency
     results.extend(_check_json_valid(repo_dir))
     results.extend(_check_skill_paths(repo_dir, meta))
+    results.extend(_check_skill_md_length(repo_dir, meta))
     results.extend(_check_version_consistency(repo_dir, meta))
 
     # Universal or agent-skills: .agents/skills/ checks
