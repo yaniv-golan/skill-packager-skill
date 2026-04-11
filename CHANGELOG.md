@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.2] - 2026-04-11
+
+### Added
+
+- OpenClaw/ClawHub platform support: formats.md section, platforms.md install instructions, SKILL.md note
+- Improved NanoClaw documentation: accurate skill type coverage, upstream links, per-platform install instructions
+- SKILL.md line-count validation warning (500-line limit, enforced by NanoClaw)
+- 2 new validation tests (74 total)
+
 ## [0.1.1] - 2026-04-08
 
 ### Fixed

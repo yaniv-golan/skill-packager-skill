@@ -3,13 +3,13 @@ name: skill-packager
 description: >
   Package AI agent skills into deployment formats — .zip, .skill, Claude plugin, Claude marketplace,
   Cursor plugin, Cursor marketplace, ChatGPT/Manus zip, Codex CLI, NanoClaw marketplace,
-  Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD.
+  OpenClaw/ClawHub, Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD.
   Use when the user says "package this skill", "deploy my skill", "create a plugin from this skill",
-  "make this work on Cursor/ChatGPT/Codex/NanoClaw", "set up a repo for my skill",
+  "make this work on Cursor/ChatGPT/Codex/NanoClaw/OpenClaw", "set up a repo for my skill",
   or wants to distribute a SKILL.md to any platform.
 metadata:
   author: Yaniv Golan
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Skill Packager
