@@ -295,6 +295,24 @@ claude plugin install {{plugin-name}}@{{marketplace-name}} --scope project
 
 ---
 
+## OpenClaw / ClawHub
+
+[OpenClaw](https://github.com/openclaw/openclaw) is a personal AI assistant that connects Claude and other LLMs to messaging platforms (Slack, WhatsApp, Telegram, Discord). [ClawHub](https://github.com/openclaw/clawhub) is OpenClaw's public skill registry.
+
+OpenClaw skills use the same SKILL.md format as Claude Code, with an optional `metadata.openclaw` frontmatter block for runtime gating (required binaries, env vars, OS restrictions, dependency install specs). These extensions are content the skill author adds to their SKILL.md — they don't affect packaging structure.
+
+**Distribution options:**
+
+1. **Claude marketplace** — OpenClaw discovers skills from `.agents/skills/` and `~/.agents/skills/`, so the Agent Skills standard format (#8) or a Claude marketplace repo both work.
+2. **ClawHub** — publish directly via `clawhub skill publish <path>`. ClawHub requires a `version` field in SKILL.md frontmatter and enforces MIT-0 licensing.
+3. **ZIP** — users can extract into `~/.openclaw/skills/` or workspace `skills/` directory.
+
+OpenClaw's skill discovery order: workspace `skills/` > `.agents/skills/` > `~/.agents/skills/` > `~/.openclaw/skills/` > bundled. Same-named skills at higher precedence override lower ones.
+
+**OpenClaw-specific note:** If your skill requires specific binaries or env vars, add a `metadata.openclaw` block to your SKILL.md frontmatter so OpenClaw can gate loading. Example: `metadata: { "openclaw": { "requires": { "bins": ["ffmpeg"], "env": ["API_KEY"] } } }`
+
+---
+
 ## GitHub Actions release workflow
 
 ### `.github/workflows/release.yml`

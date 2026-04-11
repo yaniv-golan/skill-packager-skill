@@ -216,6 +216,28 @@ claude plugin install {{plugin-name}}@{{marketplace-name}} --scope project
 > **Note:** NanoClaw enforces a 500-line limit on SKILL.md files. Skills run inside isolated Docker containers with their own filesystem. Keep instructions concise and move detail to reference files.
 ```
 
+### OpenClaw
+
+```markdown
+### OpenClaw
+
+**Option A — Agent Skills standard (recommended):**
+
+The `.agents/skills/` directory is on OpenClaw's default discovery path. If your repo includes this format, OpenClaw users can clone or symlink directly.
+
+**Option B — ClawHub:**
+
+\`\`\`bash
+clawhub install {{skill-name}}
+\`\`\`
+
+**Option C — Manual install:**
+
+Download [`{{zip-filename}}`](https://github.com/{{github-owner}}/{{github-repo}}/releases/latest/download/{{zip-filename}}) and extract the `{{skill-name}}/` folder to `~/.openclaw/skills/` or your workspace `skills/` directory.
+
+> **Note:** If your skill requires specific binaries or environment variables, add a `metadata.openclaw` block to your SKILL.md frontmatter for automatic runtime gating. See [OpenClaw skill docs](https://github.com/openclaw/openclaw/blob/main/docs/tools/skills.md).
+```
+
 ---
 
 ## Platform compatibility notes
@@ -233,6 +255,7 @@ Use these to decide which warnings to include:
 | ChatGPT | Limited | Sandbox | Limited | Yes (sandbox) | No |
 | Windsurf | Yes | Yes | Yes | Yes | Yes |
 | NanoClaw | Yes | Container | Yes (Docker) | Yes | Yes |
+| OpenClaw | Yes | Yes | Yes | Yes | Yes |
 
 **Skills that need specific tools** (e.g., `yt-dlp`, `ffmpeg`): Warn for ChatGPT and note prerequisites for all platforms.
 
