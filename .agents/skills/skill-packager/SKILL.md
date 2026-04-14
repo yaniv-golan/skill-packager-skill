@@ -9,7 +9,7 @@ description: >
   or wants to distribute a SKILL.md to any platform.
 metadata:
   author: Yaniv Golan
-  version: "0.1.2"
+  version: "0.1.3"
 ---
 
 # Skill Packager

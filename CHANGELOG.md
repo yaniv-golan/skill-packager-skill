@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3] - 2026-04-14
+
+### Fixed
+
+- Fix `actions/checkout@v6` (non-existent) in generated `release.yml` and `deploy-pages.yml` — both now emit `actions/checkout@v4`
+- Fix zip filename mismatch: `build-zip.py` and `release.yml` now name the artifact after `plugin_name` instead of `github_repo`, so the download URL in README always matches the uploaded artifact
+
 ## [0.1.2] - 2026-04-11
 
 ### Added

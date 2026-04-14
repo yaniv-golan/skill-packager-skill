@@ -124,7 +124,7 @@ def _template_vars(meta: Dict[str, Any]) -> Dict[str, str]:
         "category": meta.get("category", ""),
         "year": str(today.year),
         "date": str(today),
-        "zip_filename": f"dist/{meta.get('github_repo', meta.get('plugin_name', 'skill'))}.zip",
+        "zip_filename": f"dist/{meta.get('plugin_name', 'skill')}.zip",
     }
 
 

@@ -96,7 +96,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -153,7 +153,7 @@ jobs:
       url: ${{{{ steps.deployment.outputs.page_url }}}}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Build site
         run: |
@@ -536,7 +536,7 @@ def main():
     skills = meta.get("skills", [])
     version = args.version or meta.get("version", "0.0.0")
 
-    output = args.output or os.path.join(repo, "dist", github_repo + ".zip")
+    output = args.output or os.path.join(repo, "dist", plugin_name + ".zip")
     os.makedirs(os.path.dirname(output), exist_ok=True)
 
     skill_names = [
