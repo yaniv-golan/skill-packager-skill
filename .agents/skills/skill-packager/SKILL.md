@@ -9,7 +9,7 @@ description: >
   or wants to distribute a SKILL.md to any platform.
 metadata:
   author: Yaniv Golan
-  version: "0.1.3"
+  version: "0.2.0"
 ---
 
 # Skill Packager
@@ -126,12 +126,12 @@ The scripts are a Python package and must be run with `-m` from the `scripts/` d
 
 ```bash
 # Single skill:
-cd scripts && python3 -m skill_packager metadata \
-  --skill-path /path/to/skill > /tmp/partial-meta.json
+cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager metadata \
+  --skill-path /path/to/skill > /tmp/partial-skill-packager.json
 
 # Multi-skill:
-cd scripts && python3 -m skill_packager metadata \
-  --skill-path /path/to/skill-a --skill-path /path/to/skill-b > /tmp/partial-meta.json
+cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager metadata \
+  --skill-path /path/to/skill-a --skill-path /path/to/skill-b > /tmp/partial-skill-packager.json
 ```
 
 Read the output JSON. Fill in any empty fields — paying special attention to these:
@@ -141,20 +141,20 @@ Read the output JSON. Fill in any empty fields — paying special attention to t
 - `github_repo`, `formats`, `keywords`, `category`, `targets` — fill as needed.
 - For multi-skill: also fill `plugin_name`, `display_name`, `version`.
 
-Write the complete metadata to `meta.json`.
+Write the complete metadata to `skill-packager.json`.
 
 #### 2. Scaffold the repo
 
 ```bash
-cd scripts && python3 -m skill_packager scaffold \
-  --metadata /path/to/meta.json --output ./my-skill-repo/
+cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager scaffold \
+  --metadata /path/to/skill-packager.json --output ./my-skill-repo/
 ```
 
-This creates the full directory structure, copies skill files, renders all manifests, and creates the `.agents/skills/` stripped copy. The canonical copy (under `<plugin-name>/skills/`) keeps `` paths; the `.agents/skills/` copy has them stripped for cross-platform portability.
+This creates the full directory structure, copies skill files, renders all manifests, and creates the `.agents/skills/` stripped copy. The canonical copy (under `<plugin-name>/skills/`) keeps `${CLAUDE_SKILL_DIR}/` paths; the `.agents/skills/` copy has them stripped for cross-platform portability.
 
 #### 3. Write README.md and CHANGELOG.md
 
-These are the creative parts that require judgment. Read `references/platforms.md` for the per-platform installation instructions template.
+These are the creative parts that require judgment. Read `${CLAUDE_SKILL_DIR}/references/platforms.md` for the per-platform installation instructions template.
 
 The scaffolded README.md and CHANGELOG.md contain `<!-- SKILL_PACKAGER: REPLACE THIS -->` markers. Replace the entire file content with real content. The README should include:
 - Title and badges (Agent Skills compatible, Claude Code plugin, Cursor plugin, license)
@@ -168,7 +168,7 @@ The scaffolded README.md and CHANGELOG.md contain `<!-- SKILL_PACKAGER: REPLACE 
 For formats that need a zip (ZIP, ChatGPT/Manus, Codex CLI):
 
 ```bash
-cd scripts && python3 -m skill_packager build-zip \
+cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager build-zip \
   --skill-dir ./my-skill-repo/<plugin-name>/skills/<skill-name> \
   --output dist/<skill-name>.zip
 ```
@@ -178,7 +178,7 @@ cd scripts && python3 -m skill_packager build-zip \
 Run the validation script:
 
 ```bash
-cd scripts && python3 -m skill_packager validate ./my-skill-repo/
+cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager validate ./my-skill-repo/
 ```
 
 This checks JSON validity, version consistency across all locations, skill path resolution, `.agents/skills/` entries, and stub detection (README/CHANGELOG must not still contain the placeholder marker). Fix any failures and rerun until all checks pass.

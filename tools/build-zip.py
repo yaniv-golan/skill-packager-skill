@@ -4,9 +4,10 @@
 Usage:
     python3 tools/build-zip.py [--version VERSION] [--output PATH]
 
-Reads meta.json from the repo root (parent of tools/) to discover skill
-layout.  Copies skill directories, strips ``${CLAUDE_SKILL_DIR}/`` from
-.md files, writes VERSION, and creates a zip archive.
+Reads skill-packager.json (or legacy meta.json) from the repo root (parent
+of tools/) to discover skill layout.  Copies skill directories, strips
+``${CLAUDE_SKILL_DIR}/`` from .md files, writes VERSION, and creates a
+zip archive.
 """
 import argparse
 import json
@@ -19,6 +20,18 @@ import zipfile
 
 
 SKILL_DIR_VAR = "${CLAUDE_SKILL_DIR}/"
+NEW_MANIFEST = "skill-packager.json"
+LEGACY_MANIFEST = "meta.json"
+
+
+def _find_meta(repo_dir):
+    new = os.path.join(repo_dir, NEW_MANIFEST)
+    if os.path.isfile(new):
+        return new, False
+    legacy = os.path.join(repo_dir, LEGACY_MANIFEST)
+    if os.path.isfile(legacy):
+        return legacy, True
+    return None, False
 
 
 def _strip_skill_dir(text):
@@ -68,11 +81,13 @@ def main():
 
     # Locate repo root (parent of tools/)
     repo = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    meta_path = os.path.join(repo, "meta.json")
 
-    if not os.path.isfile(meta_path):
-        print("Error: meta.json not found at", meta_path, file=sys.stderr)
+    meta_path, is_legacy = _find_meta(repo)
+    if meta_path is None:
+        print("Error: skill-packager.json (or legacy meta.json) not found at", repo, file=sys.stderr)
         sys.exit(1)
+    if is_legacy:
+        print("[deprecation] using legacy meta.json - rename to skill-packager.json before v0.3.0", file=sys.stderr)
 
     with open(meta_path, "r", encoding="utf-8") as fh:
         meta = json.load(fh)
@@ -90,7 +105,7 @@ def main():
         for s in skills
     ]
     if not skill_names:
-        print("Error: no skills found in meta.json", file=sys.stderr)
+        print("Error: no skills found in skill-packager.json (or legacy meta.json)", file=sys.stderr)
         sys.exit(1)
 
     tmpdir = tempfile.mkdtemp(prefix="skill-zip-")

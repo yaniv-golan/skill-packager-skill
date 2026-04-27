@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0]
+
+### Changed
+- **Manifest renamed** `meta.json` → `skill-packager.json`. Existing repos
+  continue to work in 0.2.x with a deprecation warning. Migration: rename the
+  file at the repo root; if you've copied `tools/build-zip.py` or
+  `tools/bump-version.py` into your downstream repo, update them from this
+  release as well.
+- New `tools/sync-agents-mirror.py` to keep the `.agents/` mirror in sync with
+  canonical skill source.
+
+### Deprecated
+- Reading `meta.json` at the repo root. Will be removed in 0.3.0.
+
 ## [0.1.3] - 2026-04-14
 
 ### Fixed

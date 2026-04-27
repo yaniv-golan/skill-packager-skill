@@ -201,7 +201,7 @@ def _git_remote_owner_repo(cwd: Optional[Path] = None) -> tuple[str, str]:
 
 
 # ---------------------------------------------------------------------------
-# Bundle metadata (meta.json schema)
+# Bundle metadata (skill-packager.json schema)
 # ---------------------------------------------------------------------------
 
 def extract_metadata(skill_paths: List[Path]) -> Dict[str, Any]:

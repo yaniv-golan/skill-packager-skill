@@ -49,13 +49,13 @@ For multi-skill packages, also collect:
 
 ## ZIP format
 
-The ZIP contains the full skill folder(s) — SKILL.md, scripts, references, assets, agents, and any other files — with `` path references stripped for cross-platform compatibility.
+The ZIP contains the full skill folder(s) — SKILL.md, scripts, references, assets, agents, and any other files — with `${CLAUDE_SKILL_DIR}/` path references stripped for cross-platform compatibility.
 
 ### Why path hygiene is needed
 
 In Claude Code, `${CLAUDE_SKILL_DIR}` is expanded at runtime to the skill's absolute path on disk. Skills use it for:
-- **Script invocations**: `python3 scripts/validate.py proof.py`
-- **Markdown links to references**: `[api.md](references/api.md)`
+- **Script invocations**: `python3 ${CLAUDE_SKILL_DIR}/scripts/validate.py proof.py`
+- **Markdown links to references**: `[api.md](${CLAUDE_SKILL_DIR}/references/api.md)`
 - **Cross-references between files**: reference files linking to other reference files
 
 Other platforms (Manus, ChatGPT, Codex, Windsurf, etc.) don't expand this variable. Stripping the prefix converts absolute paths to relative paths (`scripts/validate.py`, `references/api.md`), which work because the skill directory is extracted as a flat structure where these subdirectories are siblings of SKILL.md.
@@ -73,9 +73,9 @@ cp -r {{plugin-name}}/skills/{{skill-name}} dist/{{skill-name}}
 #   cp -r {{plugin-name}}/skills/$skill dist/$skill
 # done
 
-# Path hygiene — strip  from ALL markdown files
+# Path hygiene — strip ${CLAUDE_SKILL_DIR}/ from ALL markdown files
 # This includes SKILL.md AND reference files that cross-reference each other
-find dist/ -name '*.md' -exec sed -i '' 's|\||g' {} +
+find dist/ -name '*.md' -exec sed -i '' 's|\${CLAUDE_SKILL_DIR}/||g' {} +
 
 # Write version
 echo "{{version}}" > dist/{{skill-name}}/VERSION
@@ -89,7 +89,7 @@ The zip should contain everything in the skill directory:
 
 ```
 {{skill-name}}/
-├── SKILL.md              (with  stripped)
+├── SKILL.md              (with ${CLAUDE_SKILL_DIR}/ stripped)
 ├── VERSION
 ├── scripts/              (if exists — copied as-is, these are executed by the agent)
 ├── references/           (if exists — .md files have paths stripped too)
@@ -342,7 +342,7 @@ jobs:
         run: |
           mkdir -p dist
           cp -r {{plugin-name}}/skills/{{skill-name}} dist/{{skill-name}}
-          find dist/{{skill-name}} -name '*.md' -exec sed -i 's|\||g' {} +
+          find dist/{{skill-name}} -name '*.md' -exec sed -i 's|\${CLAUDE_SKILL_DIR}/||g' {} +
           echo "${{ steps.version.outputs.version }}" > dist/{{skill-name}}/VERSION
           cd dist && zip -r ../{{zip-filename}} {{skill-name}}/
 
@@ -367,7 +367,7 @@ For multi-skill packages, the build step copies the entire skills directory:
         run: |
           mkdir -p dist
           cp -r {{plugin-name}}/skills dist/skills
-          find dist/skills -name '*.md' -exec sed -i 's|\||g' {} +
+          find dist/skills -name '*.md' -exec sed -i 's|\${CLAUDE_SKILL_DIR}/||g' {} +
           cd dist && zip -r ../{{zip-filename}} skills/
 ```
 

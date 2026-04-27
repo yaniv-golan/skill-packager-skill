@@ -3,8 +3,24 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import List, Optional
+
+
+NEW_MANIFEST = "skill-packager.json"
+LEGACY_MANIFEST = "meta.json"
+
+
+def _find_meta(repo_dir: Path):
+    """Return (Path|None, is_legacy: bool). Prefers new name, falls back to legacy."""
+    new = repo_dir / NEW_MANIFEST
+    if new.exists():
+        return new, False
+    legacy = repo_dir / LEGACY_MANIFEST
+    if legacy.exists():
+        return legacy, True
+    return None, False
 
 
 def _update_json_version(path: Path, version: str, json_path: Optional[str] = None) -> bool:
@@ -60,13 +76,16 @@ def bump_version(repo_dir: Path, version: str) -> List[str]:
     repo_dir = Path(repo_dir)
     updated: List[str] = []
 
-    # 1. meta.json → "version"
-    meta_path = repo_dir / "meta.json"
-    if _update_json_version(meta_path, version):
-        updated.append("meta.json")
+    # 1. skill-packager.json (or legacy meta.json) → "version"
+    meta_path, is_legacy = _find_meta(repo_dir)
+    if is_legacy:
+        print("[deprecation] using legacy meta.json - rename to skill-packager.json before v0.3.0",
+              file=sys.stderr)
+    if meta_path is not None and _update_json_version(meta_path, version):
+        updated.append(meta_path.name)
 
-    # Read meta.json for skill/plugin info
-    meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
+    # Read manifest for skill/plugin info
+    meta = json.loads(meta_path.read_text()) if meta_path is not None and meta_path.exists() else {}
     plugin_name = meta.get("plugin_name", "")
     skills = meta.get("skills", [])
 

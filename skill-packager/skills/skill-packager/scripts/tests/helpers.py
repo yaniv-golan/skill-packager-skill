@@ -61,7 +61,7 @@ def make_sample_meta(tmp_path, **overrides):
         "targets": [],
     }
     meta.update(overrides)
-    meta_path = tmp_path / "meta.json"
+    meta_path = tmp_path / "skill-packager.json"
     meta_path.write_text(json.dumps(meta, indent=2))
     return meta_path
 

@@ -15,7 +15,7 @@ def build_parser():
 
     # scaffold subcommand
     scaffold_parser = subparsers.add_parser("scaffold", help="Scaffold files from metadata")
-    scaffold_parser.add_argument("--metadata", required=True, help="Path to meta.json")
+    scaffold_parser.add_argument("--metadata", required=True, help="Path to skill-packager.json (or legacy meta.json)")
     scaffold_parser.add_argument("--output", required=True, help="Output directory")
 
     # build-zip subcommand

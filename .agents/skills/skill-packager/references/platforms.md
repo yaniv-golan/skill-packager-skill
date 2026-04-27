@@ -2,6 +2,18 @@
 
 Templates for the README.md installation section. Replace `{{variables}}` with actual values.
 
+### Variable legend
+
+| Placeholder | Value |
+|---|---|
+| `{{github-owner}}` | GitHub username or org (e.g. `yaniv-golan`) |
+| `{{github-repo}}` | GitHub repository name (e.g. `my-skill`) |
+| `{{plugin-name}}` | The `plugin_name` from `skill-packager.json` (e.g. `my-skill`) |
+| `{{skill-name}}` | The skill directory name inside `skills/` |
+| `{{zip-filename}}` | **`{{plugin-name}}.zip`** — always the plugin name, never the repo name |
+| `{{marketplace-name}}` | Marketplace identifier (usually same as `{{github-owner}}/{{plugin-name}}`) |
+| `{{license}}` | SPDX license identifier (e.g. `MIT`) |
+
 ## Table of Contents
 
 - [Badges](#badges)

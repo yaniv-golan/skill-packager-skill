@@ -4,13 +4,13 @@ This project uses [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH
 
 ## Version Source of Truth
 
-The canonical version lives in `meta.json` (and the root `VERSION` file) at the repo root. All other version locations are updated from it.
+The canonical version lives in `skill-packager.json` (and the root `VERSION` file) at the repo root. All other version locations are updated from it.
 
 ## Version Locations
 
 The version appears in these files (all managed by the bump script):
 
-1. `meta.json` — source of truth
+1. `skill-packager.json` — source of truth
 2. `VERSION` — plain-text copy at repo root
 3. `skill-packager/.claude-plugin/plugin.json` — `"version"` field
 4. `.claude-plugin/marketplace.json` — `metadata.version` (if marketplace format enabled)

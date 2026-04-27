@@ -3,7 +3,30 @@
 Each constant is a Python format-string. Call ``TEMPLATE.format(**vars)``
 where *vars* is a dict with keys such as ``skill_name``, ``plugin_name``,
 ``version``, etc.  Literal braces that must appear in the output are doubled.
+
+Templates that embed Python scripts use ``__FIND_META_HELPER__`` as a sentinel
+that is replaced AFTER ``.format()`` to inject the ``_find_meta()`` helper
+without doubling every brace in it.
 """
+
+# ---------------------------------------------------------------------------
+# Sentinel helper — injected into BUMP_VERSION_PY and BUILD_ZIP_PY
+# ---------------------------------------------------------------------------
+
+_FIND_META_HELPER = '''\
+NEW_MANIFEST = "skill-packager.json"
+LEGACY_MANIFEST = "meta.json"
+
+
+def _find_meta(repo_dir):
+    new = os.path.join(repo_dir, NEW_MANIFEST)
+    if os.path.isfile(new):
+        return new, False
+    legacy = os.path.join(repo_dir, LEGACY_MANIFEST)
+    if os.path.isfile(legacy):
+        return legacy, True
+    return None, False
+'''
 
 # ---------------------------------------------------------------------------
 # 1. Claude plugin – inner manifest
@@ -238,13 +261,13 @@ This project uses [Semantic Versioning](https://semver.org/) (`MAJOR.MINOR.PATCH
 
 ## Version Source of Truth
 
-The canonical version lives in `meta.json` (and the root `VERSION` file) at the repo root. All other version locations are updated from it.
+The canonical version lives in `skill-packager.json` (and the root `VERSION` file) at the repo root. All other version locations are updated from it.
 
 ## Version Locations
 
 The version appears in these files (all managed by the bump script):
 
-1. `meta.json` — source of truth
+1. `skill-packager.json` — source of truth
 2. `VERSION` — plain-text copy at repo root
 3. `{plugin_name}/.claude-plugin/plugin.json` — `"version"` field
 4. `.claude-plugin/marketplace.json` — `metadata.version` (if marketplace format enabled)
@@ -318,14 +341,17 @@ BUMP_VERSION_PY = """\
 Usage:
     python3 tools/bump-version.py REPO_DIR VERSION
 
-Reads meta.json from REPO_DIR to discover the plugin name, skill names,
-and enabled formats, then updates every file that contains a version.
+Reads skill-packager.json (or legacy meta.json) from REPO_DIR to discover
+the plugin name, skill names, and enabled formats, then updates every file
+that contains a version.
 \"\"\"
 import json
 import os
 import re
 import sys
 
+
+__FIND_META_HELPER__
 
 def _update_json_version(path, key_path, version):
     \"\"\"Set a nested key in a JSON file.  *key_path* is a dot-separated string.\"\"\"
@@ -374,10 +400,12 @@ def main():
     repo = os.path.abspath(sys.argv[1])
     version = sys.argv[2]
 
-    meta_path = os.path.join(repo, "meta.json")
-    if not os.path.isfile(meta_path):
-        print("Error: meta.json not found in", repo, file=sys.stderr)
+    meta_path, is_legacy = _find_meta(repo)
+    if meta_path is None:
+        print("Error: skill-packager.json (or legacy meta.json) not found at", repo, file=sys.stderr)
         sys.exit(1)
+    if is_legacy:
+        print("[deprecation] using legacy meta.json - rename to skill-packager.json before v0.3.0", file=sys.stderr)
 
     with open(meta_path, "r", encoding="utf-8") as fh:
         meta = json.load(fh)
@@ -388,9 +416,9 @@ def main():
 
     updated = []
 
-    # 1. meta.json version
+    # 1. skill-packager.json / meta.json version
     if _update_json_version(meta_path, "version", version):
-        updated.append("meta.json")
+        updated.append(os.path.basename(meta_path))
 
     # 2. Root VERSION file
     _write_version_file(os.path.join(repo, "VERSION"), version)
@@ -458,9 +486,10 @@ BUILD_ZIP_PY = """\
 Usage:
     python3 tools/build-zip.py [--version VERSION] [--output PATH]
 
-Reads meta.json from the repo root (parent of tools/) to discover skill
-layout.  Copies skill directories, strips ``${{CLAUDE_SKILL_DIR}}/`` from
-.md files, writes VERSION, and creates a zip archive.
+Reads skill-packager.json (or legacy meta.json) from the repo root (parent
+of tools/) to discover skill layout.  Copies skill directories, strips
+``${{CLAUDE_SKILL_DIR}}/`` from .md files, writes VERSION, and creates a
+zip archive.
 \"\"\"
 import argparse
 import json
@@ -473,6 +502,7 @@ import zipfile
 
 
 SKILL_DIR_VAR = "${{CLAUDE_SKILL_DIR}}/"
+__FIND_META_HELPER__
 
 
 def _strip_skill_dir(text):
@@ -522,11 +552,13 @@ def main():
 
     # Locate repo root (parent of tools/)
     repo = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    meta_path = os.path.join(repo, "meta.json")
 
-    if not os.path.isfile(meta_path):
-        print("Error: meta.json not found at", meta_path, file=sys.stderr)
+    meta_path, is_legacy = _find_meta(repo)
+    if meta_path is None:
+        print("Error: skill-packager.json (or legacy meta.json) not found at", repo, file=sys.stderr)
         sys.exit(1)
+    if is_legacy:
+        print("[deprecation] using legacy meta.json - rename to skill-packager.json before v0.3.0", file=sys.stderr)
 
     with open(meta_path, "r", encoding="utf-8") as fh:
         meta = json.load(fh)
@@ -544,7 +576,7 @@ def main():
         for s in skills
     ]
     if not skill_names:
-        print("Error: no skills found in meta.json", file=sys.stderr)
+        print("Error: no skills found in skill-packager.json (or legacy meta.json)", file=sys.stderr)
         sys.exit(1)
 
     tmpdir = tempfile.mkdtemp(prefix="skill-zip-")

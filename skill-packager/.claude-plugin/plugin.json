@@ -1,6 +1,6 @@
 {
   "name": "skill-packager",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Package AI agent skills into deployment formats \u2014 .zip, .skill, Claude plugin, Claude marketplace, Cursor plugin, Cursor marketplace, ChatGPT/Manus zip, Codex CLI, NanoClaw marketplace, OpenClaw/ClawHub, Agent Skills standard (.agents/), or a universal repo with all formats + CI/CD.",
   "author": {
     "name": "Yaniv Golan",

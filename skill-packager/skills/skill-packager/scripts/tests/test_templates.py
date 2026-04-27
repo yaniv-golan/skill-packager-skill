@@ -14,6 +14,7 @@ from skill_packager.templates import (
     README_STUB,
     RELEASE_YML,
     VERSIONING_MD,
+    _FIND_META_HELPER,
 )
 
 
@@ -161,9 +162,9 @@ class TestVersioningMd:
         rendered = VERSIONING_MD.format(**_sample_vars())
         assert "proof-engine" in rendered
 
-    def test_references_meta_json(self):
+    def test_references_skill_packager_json(self):
         rendered = VERSIONING_MD.format(**_sample_vars())
-        assert "meta.json" in rendered
+        assert "skill-packager.json" in rendered
 
 
 # ---- Python script templates compile ----
@@ -171,21 +172,21 @@ class TestVersioningMd:
 
 class TestBumpVersionPy:
     def test_compiles(self):
-        rendered = BUMP_VERSION_PY.format(**_sample_vars())
+        rendered = BUMP_VERSION_PY.format(**_sample_vars()).replace("__FIND_META_HELPER__", _FIND_META_HELPER)
         compile(rendered, "bump-version.py", "exec")
 
-    def test_contains_meta_json_read(self):
-        rendered = BUMP_VERSION_PY.format(**_sample_vars())
-        assert "meta.json" in rendered
+    def test_contains_skill_packager_json_read(self):
+        rendered = BUMP_VERSION_PY.format(**_sample_vars()).replace("__FIND_META_HELPER__", "")
+        assert "skill-packager.json" in rendered
 
 
 class TestBuildZipPy:
     def test_compiles(self):
-        rendered = BUILD_ZIP_PY.format(**_sample_vars())
+        rendered = BUILD_ZIP_PY.format(**_sample_vars()).replace("__FIND_META_HELPER__", _FIND_META_HELPER)
         compile(rendered, "build-zip.py", "exec")
 
     def test_contains_skill_dir_stripping(self):
-        rendered = BUILD_ZIP_PY.format(**_sample_vars())
+        rendered = BUILD_ZIP_PY.format(**_sample_vars()).replace("__FIND_META_HELPER__", _FIND_META_HELPER)
         assert "CLAUDE_SKILL_DIR" in rendered
 
 

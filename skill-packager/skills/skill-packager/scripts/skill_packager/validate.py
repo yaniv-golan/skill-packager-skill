@@ -10,6 +10,19 @@ from typing import Any, Dict, List
 
 STUB_MARKER = "SKILL_PACKAGER: REPLACE THIS"
 SKILL_MD_LINE_LIMIT = 500
+NEW_MANIFEST = "skill-packager.json"
+LEGACY_MANIFEST = "meta.json"
+
+
+def _find_meta(repo_dir: Path):
+    """Return (Path|None, is_legacy: bool). Prefers new name, falls back to legacy."""
+    new = repo_dir / NEW_MANIFEST
+    if new.exists():
+        return new, False
+    legacy = repo_dir / LEGACY_MANIFEST
+    if legacy.exists():
+        return legacy, True
+    return None, False
 
 
 # ---------------------------------------------------------------------------
@@ -46,7 +59,7 @@ def _extract_version_from_skill_md(path: Path) -> str | None:
 
 
 def _check_version_consistency(repo_dir: Path, meta: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Compare version across VERSION, meta.json, plugin.json, marketplace.json, etc."""
+    """Compare version across VERSION, skill-packager.json, plugin.json, marketplace.json, etc."""
     results: List[Dict[str, Any]] = []
     expected = meta.get("version", "0.0.0")
 
@@ -59,13 +72,14 @@ def _check_version_consistency(repo_dir: Path, meta: Dict[str, Any]) -> List[Dic
                          "passed": passed,
                          "message": f"expected {expected}, found {found}" if not passed else ""})
 
-    # meta.json version (always present since we loaded it)
-    meta_path = repo_dir / "meta.json"
-    if meta_path.exists():
-        meta_on_disk = json.loads(meta_path.read_text())
+    # skill-packager.json / meta.json version (always present since we loaded it)
+    manifest_path, _ = _find_meta(repo_dir)
+    if manifest_path is not None:
+        meta_on_disk = json.loads(manifest_path.read_text())
         found = meta_on_disk.get("version", "")
         passed = found == expected
-        results.append({"check": "version_consistency: meta.json",
+        manifest_label = manifest_path.name
+        results.append({"check": f"version_consistency: {manifest_label}",
                          "passed": passed,
                          "message": f"expected {expected}, found {found}" if not passed else ""})
 
@@ -249,11 +263,14 @@ def validate_repo(repo_dir: Path) -> List[Dict[str, Any]]:
     repo_dir = Path(repo_dir)
     results: List[Dict[str, Any]] = []
 
-    # Load meta.json for format awareness
-    meta_path = repo_dir / "meta.json"
-    if not meta_path.exists():
-        return [{"check": "meta_json_exists", "passed": False,
-                 "message": "meta.json not found in repo root"}]
+    # Load skill-packager.json (or legacy meta.json) for format awareness
+    meta_path, is_legacy = _find_meta(repo_dir)
+    if meta_path is None:
+        return [{"check": "manifest_exists", "passed": False,
+                 "message": "skill-packager.json (or legacy meta.json) not found in repo root"}]
+    if is_legacy:
+        results.append({"check": "manifest_filename", "passed": True, "severity": "warn",
+                         "message": "Using legacy meta.json — rename to skill-packager.json before v0.3.0"})
     meta = json.loads(meta_path.read_text())
     formats = meta.get("formats", ["universal"])
 

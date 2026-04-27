@@ -1,4 +1,4 @@
-"""Scaffold a skill-packager repository from meta.json."""
+"""Scaffold a skill-packager repository from skill-packager.json (or legacy meta.json)."""
 from __future__ import annotations
 
 import json
@@ -24,6 +24,7 @@ from skill_packager.templates import (
     VERSIONING_MD,
     BUMP_VERSION_PY,
     BUILD_ZIP_PY,
+    _FIND_META_HELPER,
 )
 
 
@@ -187,8 +188,8 @@ def scaffold_repo(meta_path: Path, output_dir: Path) -> None:
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Copy meta.json
-    shutil.copy2(meta_path, output_dir / "meta.json")
+    # Copy manifest as skill-packager.json (new canonical name)
+    shutil.copy2(meta_path, output_dir / "skill-packager.json")
 
     # --- Plugin tree ---
     if _wants_plugin_tree(formats):
@@ -256,11 +257,15 @@ def scaffold_repo(meta_path: Path, output_dir: Path) -> None:
         tools_dir.mkdir(parents=True, exist_ok=True)
 
         bump_path = tools_dir / "bump-version.py"
-        bump_path.write_text(BUMP_VERSION_PY.format(**tvars))
+        bump_path.write_text(
+            BUMP_VERSION_PY.format(**tvars).replace("__FIND_META_HELPER__", _FIND_META_HELPER)
+        )
         _make_executable(bump_path)
 
         zip_path = tools_dir / "build-zip.py"
-        zip_path.write_text(BUILD_ZIP_PY.format(**tvars))
+        zip_path.write_text(
+            BUILD_ZIP_PY.format(**tvars).replace("__FIND_META_HELPER__", _FIND_META_HELPER)
+        )
         _make_executable(zip_path)
 
     # --- Static files ---

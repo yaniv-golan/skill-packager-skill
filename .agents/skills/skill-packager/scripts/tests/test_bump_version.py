@@ -26,7 +26,7 @@ def test_bump_updates_root_version(tmp_path):
 def test_bump_updates_meta_json(tmp_path):
     repo = _scaffold_repo(tmp_path)
     bump_version(repo, "2.0.0")
-    meta = json.loads((repo / "meta.json").read_text())
+    meta = json.loads((repo / "skill-packager.json").read_text())
     assert meta["version"] == "2.0.0"
 
 
@@ -68,5 +68,5 @@ def test_bump_updates_agents_skills_version(tmp_path):
 def test_bump_skips_nonexistent_files(tmp_path):
     repo = _scaffold_repo(tmp_path, formats=["claude-plugin"])
     bump_version(repo, "2.0.0")
-    meta = json.loads((repo / "meta.json").read_text())
+    meta = json.loads((repo / "skill-packager.json").read_text())
     assert meta["version"] == "2.0.0"

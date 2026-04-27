@@ -72,3 +72,26 @@ def test_validate_json_output(tmp_path):
     results = validate_repo(repo)
     json.dumps(results)  # Must be serializable
     assert all("check" in r and "passed" in r for r in results)
+
+
+def test_validate_no_warning_for_short_skill_md(tmp_path):
+    repo = _scaffold_valid_repo(tmp_path)
+    results = validate_repo(repo)
+    length_checks = [r for r in results if "skill_md_length" in r["check"]]
+    assert all(r["passed"] for r in length_checks)
+    assert all("warning" not in r.get("message", "").lower() for r in length_checks)
+
+
+def test_validate_warns_for_long_skill_md(tmp_path):
+    repo = _scaffold_valid_repo(tmp_path)
+    # Find the SKILL.md in the plugin tree and make it 501 lines
+    skill_mds = list(repo.rglob("SKILL.md"))
+    assert skill_mds, "Expected at least one SKILL.md in scaffolded repo"
+    for smd in skill_mds:
+        smd.write_text("---\nname: test-skill\ndescription: test\n---\n" + "\n".join(f"line {i}" for i in range(501)))
+    results = validate_repo(repo)
+    length_checks = [r for r in results if "skill_md_length" in r["check"]]
+    assert length_checks, "Expected skill_md_length checks"
+    assert all(r["passed"] for r in length_checks), "Length check should pass (warning, not failure)"
+    assert any("warning" in r.get("message", "").lower() for r in length_checks), \
+        f"Expected warning message, got: {length_checks}"

@@ -23,7 +23,7 @@ def test_full_round_trip_universal(tmp_path):
     partial["targets"] = ["claude-desktop", "cursor"]
     partial["keywords"] = ["test"]
     partial["category"] = "development"
-    meta_path = tmp_path / "meta.json"
+    meta_path = tmp_path / "skill-packager.json"
     meta_path.write_text(json.dumps(partial, indent=2))
 
     output = tmp_path / "output"
@@ -78,7 +78,7 @@ def test_full_round_trip_cli(tmp_path):
     meta["formats"] = ["claude-plugin"]
     meta["keywords"] = ["test"]
     meta["category"] = "development"
-    meta_path = tmp_path / "meta.json"
+    meta_path = tmp_path / "skill-packager.json"
     meta_path.write_text(json.dumps(meta, indent=2))
 
     output = tmp_path / "output"
@@ -108,7 +108,7 @@ def test_generated_bump_version_py_works(tmp_path):
     partial["targets"] = ["claude-desktop"]
     partial["keywords"] = ["test"]
     partial["category"] = "development"
-    meta_path = tmp_path / "meta.json"
+    meta_path = tmp_path / "skill-packager.json"
     meta_path.write_text(json.dumps(partial, indent=2))
     output = tmp_path / "output"
     scaffold_repo(meta_path, output)
@@ -120,7 +120,7 @@ def test_generated_bump_version_py_works(tmp_path):
     assert result.returncode == 0, result.stderr
 
     assert (output / "VERSION").read_text().strip() == "3.0.0"
-    meta = json.loads((output / "meta.json").read_text())
+    meta = json.loads((output / "skill-packager.json").read_text())
     assert meta["version"] == "3.0.0"
     plugin = json.loads((output / "test-skill" / ".claude-plugin" / "plugin.json").read_text())
     assert plugin["version"] == "3.0.0"
@@ -136,7 +136,7 @@ def test_generated_build_zip_py_works(tmp_path):
     partial["targets"] = ["claude-desktop"]
     partial["keywords"] = ["test"]
     partial["category"] = "development"
-    meta_path = tmp_path / "meta.json"
+    meta_path = tmp_path / "skill-packager.json"
     meta_path.write_text(json.dumps(partial, indent=2))
     output = tmp_path / "output"
     scaffold_repo(meta_path, output)

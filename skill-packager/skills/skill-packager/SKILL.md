@@ -9,7 +9,7 @@ description: >
   or wants to distribute a SKILL.md to any platform.
 metadata:
   author: Yaniv Golan
-  version: "0.1.3"
+  version: "0.2.0"
 ---
 
 # Skill Packager
@@ -127,11 +127,11 @@ The scripts are a Python package and must be run with `-m` from the `scripts/` d
 ```bash
 # Single skill:
 cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager metadata \
-  --skill-path /path/to/skill > /tmp/partial-meta.json
+  --skill-path /path/to/skill > /tmp/partial-skill-packager.json
 
 # Multi-skill:
 cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager metadata \
-  --skill-path /path/to/skill-a --skill-path /path/to/skill-b > /tmp/partial-meta.json
+  --skill-path /path/to/skill-a --skill-path /path/to/skill-b > /tmp/partial-skill-packager.json
 ```
 
 Read the output JSON. Fill in any empty fields — paying special attention to these:
@@ -141,13 +141,13 @@ Read the output JSON. Fill in any empty fields — paying special attention to t
 - `github_repo`, `formats`, `keywords`, `category`, `targets` — fill as needed.
 - For multi-skill: also fill `plugin_name`, `display_name`, `version`.
 
-Write the complete metadata to `meta.json`.
+Write the complete metadata to `skill-packager.json`.
 
 #### 2. Scaffold the repo
 
 ```bash
 cd ${CLAUDE_SKILL_DIR}/scripts && python3 -m skill_packager scaffold \
-  --metadata /path/to/meta.json --output ./my-skill-repo/
+  --metadata /path/to/skill-packager.json --output ./my-skill-repo/
 ```
 
 This creates the full directory structure, copies skill files, renders all manifests, and creates the `.agents/skills/` stripped copy. The canonical copy (under `<plugin-name>/skills/`) keeps `${CLAUDE_SKILL_DIR}/` paths; the `.agents/skills/` copy has them stripped for cross-platform portability.

@@ -49,7 +49,7 @@ def test_scaffold_universal_creates_all_dirs(tmp_path):
     assert (output / "tools" / "bump-version.py").exists()
     assert (output / "tools" / "build-zip.py").exists()
     assert (output / "static" / "install-claude-desktop.html").exists()
-    assert (output / "meta.json").exists()
+    assert (output / "skill-packager.json").exists()
     assert (output / "VERSION").exists()
     assert (output / "VERSIONING.md").exists()
     assert (output / "CHANGELOG.md").exists()
