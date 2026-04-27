@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1]
+
+### Changed
+- Bump GitHub Actions to Node.js 24-compatible majors in both live workflows
+  and embedded templates: `actions/checkout@v4` → `@v6`,
+  `actions/setup-python@v5` → `@v6`, `softprops/action-gh-release@v2` → `@v3`,
+  `actions/upload-pages-artifact@v4` → `@v5`, `actions/deploy-pages@v4` → `@v5`.
+  Avoids GitHub's June 2026 forced Node 24 migration warning.
+
 ## [0.2.0]
 
 ### Changed
